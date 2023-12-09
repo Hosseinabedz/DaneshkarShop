@@ -55,6 +55,19 @@ namespace DaneshkarShop.Application.Services.Implementation
             AddUserToTheDataBase(user);
             return true;
         }
+        public async Task<User> GetUserByMobile(string mobile)
+        {
+            return await _repo.GetUserByMobile(mobile.Trim());
+        }
+        public async Task<bool> LoginUser(UserLoginDTO userDTO) 
+        {
+            var user = await GetUserByMobile(userDTO.Mobile);
+            if (user == null)
+            {
+                return false;
+            }
+            return true;
+        }
         
 
     }

@@ -3,6 +3,7 @@ using DaneshkarShop.Application.Services.Interface;
 using DaneshkarShop.Data.AppDbContext;
 using DaneshkarShop.Data.Repositories;
 using DaneshkarShop.Domain.IRepositories;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 
@@ -25,6 +26,24 @@ namespace DaneshkarShop.Presentation
 
             #endregion
 
+
+
+            #region Authentication
+            builder.Services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+            })
+                // Add Cookie settings
+                .AddCookie(options =>
+                {
+                    options.LoginPath = "/Account/Login";
+                    options.LogoutPath = "/Account/Logout";
+                    options.ExpireTimeSpan = TimeSpan.FromDays(30);
+                }); 
+            #endregion
             #region App Services
             var app = builder.Build();
 

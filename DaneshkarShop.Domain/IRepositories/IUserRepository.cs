@@ -12,5 +12,6 @@ namespace DaneshkarShop.Domain.IRepositories
         Task AddUser(User user);
         Task<bool> IsExistsUserByMobile(string mobile);
         Task SaveChanges();
+        Task<User> GetUserByMobile(string mobile);
     }
 }

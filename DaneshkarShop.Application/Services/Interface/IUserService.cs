@@ -14,5 +14,7 @@ namespace DaneshkarShop.Application.Services.Interface
         Task<bool> IsExistsUserByMobile(string mobile);
         User FillUserEntity(UserRegisterDTO userDTO);
         Task<bool> RegisterUser(UserRegisterDTO userDTO);
+        Task<User> GetUserByMobile(string mobile);
+        Task<bool> LoginUser(UserLoginDTO userDTO);
     }
 }
