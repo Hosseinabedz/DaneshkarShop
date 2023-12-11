@@ -1,8 +1,10 @@
-﻿using DaneshkarShop.Domain.Entities.User;
+﻿using DaneshkarShop.Domain.Entities.Role;
+using DaneshkarShop.Domain.Entities.User;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Principal;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -18,6 +20,8 @@ namespace DaneshkarShop.Data.AppDbContext
 
         #region DbSet
         public DbSet<User> Users { get; set; }
+        public DbSet<Role> Roles { get; set; }
+        public DbSet<UserSelectedRole> UserSelectedRoles { get; set; }
         #endregion
 
         #region Model Creating
