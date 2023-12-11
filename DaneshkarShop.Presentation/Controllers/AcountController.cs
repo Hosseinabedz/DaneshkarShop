@@ -53,12 +53,13 @@ public class AccountController : Controller
             var user =  await _service.GetUserByMobile(userDTO.Mobile);
             if( user != null)
             {
+                #region Setting cookie
                 var claims = new List<Claim>
-            {
+                {
                     new (ClaimTypes.NameIdentifier, user.UserId.ToString()),
                     new (ClaimTypes.MobilePhone, user.Mobile),
                     new (ClaimTypes.Name, user.UserName)
-            };
+                };
 
                 var claimIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
                 var principal = new ClaimsPrincipal(claimIdentity);
@@ -66,6 +67,8 @@ public class AccountController : Controller
                 var authProps = new AuthenticationProperties();
 
                 await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal, authProps);
+                #endregion
+
 
                 return RedirectToAction("Index", "Home");
             }
