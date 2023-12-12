@@ -18,6 +18,5 @@ public class User
     public bool IsDelete { get; set; }
 
     //Relations
-    public Role.Role Role { get; set; }
     public ICollection<UserSelectedRole> UserSelectedRoles { get; set; }
 }

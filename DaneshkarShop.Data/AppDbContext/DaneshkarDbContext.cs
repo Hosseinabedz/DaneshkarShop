@@ -30,8 +30,10 @@ namespace DaneshkarShop.Data.AppDbContext
             var cascadeFKs = modelBuilder.Model.GetEntityTypes()
                 .SelectMany(t => t.GetForeignKeys())
                 .Where(fk => !fk.IsOwnership && fk.DeleteBehavior == DeleteBehavior.Cascade);
+
             foreach (var fk in cascadeFKs)
-                fk.DeleteBehavior = DeleteBehavior.Cascade;
+                fk.DeleteBehavior = DeleteBehavior.Restrict;
+
 
             base.OnModelCreating(modelBuilder);
         }

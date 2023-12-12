@@ -19,11 +19,10 @@ namespace DaneshkarShop.Domain.Entities.Role
         [Required]
         public string RoleUniqueName { get; set; }
         public DateTime CreateDate { get; set; }
-        public bool IsDelete { get; set; }
+        public bool IsDelete { get; set; }  
 
 
         //Relations
-        public User.User User { get; set; }
         public ICollection<UserSelectedRole> UserSelectedRoles { get; set; }
     }
 }
