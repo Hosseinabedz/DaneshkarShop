@@ -10,5 +10,6 @@ namespace DaneshkarShop.Application.Services.Interface
     public interface IRoleService
     {
         Task<List<Role>> GetUserRolesByUserId(int userId);
+        Task<bool> IsUserAdmin(int userId);
     }
 }

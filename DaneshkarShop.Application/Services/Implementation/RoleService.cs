@@ -23,5 +23,15 @@ namespace DaneshkarShop.Application.Services.Implementation
         {
             return await _roleRepository.GetUserRolesByUserId(userId);
         }
+        public async Task<bool> IsUserAdmin(int userId)
+        {
+            var listOfRoles = await GetUserRolesByUserId(userId);
+            foreach (var role in listOfRoles)
+            {
+                if (role.RoleUniqueName == "Admin") return true;
+            }
+            return false;
+        }
+
     }
 }
