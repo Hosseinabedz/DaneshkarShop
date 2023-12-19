@@ -10,13 +10,12 @@ public class UserSelectedRole
 {
     ///Properties
     public int Id { get; set; }
-    
-
+    public int RoleId { get; set; }
+    public int UserId { get; set; }
     //Relations
     public Role Role { get; set; }
-    public int RoleId { get; set; }
     public User.User User { get; set; }
-    public int UserId { get; set; }
+    
 
 
 }

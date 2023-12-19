@@ -23,6 +23,9 @@ namespace DaneshkarShop.Presentation
                 op.UseSqlServer(builder.Configuration.GetConnectionString("DaneshkarDbContext")));
             builder.Services.AddScoped<IUserService, UserService>();
             builder.Services.AddScoped<IUserRepository, UserRepository>();
+            builder.Services.AddScoped<IRoleRepository, RoleRepository>();
+            builder.Services.AddScoped<IRoleService, RoleService>();
+
 
             #endregion
 
@@ -63,7 +66,7 @@ namespace DaneshkarShop.Presentation
             app.UseAuthorization();
 
             app.MapControllerRoute(
-                name: "MyArea",
+                name: "MyAreas",
                 pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
             app.MapControllerRoute(
                 name: "default",
