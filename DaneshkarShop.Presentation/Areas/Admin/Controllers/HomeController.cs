@@ -20,5 +20,9 @@ namespace DaneshkarShop.Presentation.Areas.Admin.Controllers
         {
             return View();
         }
+        public async Task<IActionResult> GetAllUsers()
+        {
+            return View();
+        }
     }
 }

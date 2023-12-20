@@ -14,5 +14,6 @@ namespace DaneshkarShop.Domain.IRepositories
         Task SaveChanges();
         Task<User> GetUserByMobile(string mobile);
         Task<User?> GetUserById(int id);
+        Task<List<User>> GetAllUsresAsync();
     }
 }

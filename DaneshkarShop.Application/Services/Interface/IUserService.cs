@@ -16,5 +16,6 @@ namespace DaneshkarShop.Application.Services.Interface
         Task<bool> RegisterUser(UserRegisterDTO userDTO);
         Task<User> GetUserByMobile(string mobile);
         Task<bool> LoginUser(UserLoginDTO userDTO);
+        Task<List<User>> GetAllUsresAsync();
     }
 }

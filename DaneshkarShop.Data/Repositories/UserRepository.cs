@@ -45,6 +45,13 @@ namespace DaneshkarShop.Data.Repositories
         {
             return await _context.Users.FindAsync(id);
         }
+        public async Task<List<User>> GetAllUsresAsync()
+        {
+            return await _context.Users
+                                 .Where(u => u.IsDelete == false)
+                                 .OrderByDescending(p => p.CreateDate)
+                                 .ToListAsync();
+        }
     }
 
 }

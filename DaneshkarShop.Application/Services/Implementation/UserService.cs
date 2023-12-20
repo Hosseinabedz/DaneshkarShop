@@ -68,7 +68,12 @@ namespace DaneshkarShop.Application.Services.Implementation
             }
             return true;
         }
-        
+        public async Task<List<User>> GetAllUsresAsync()
+        {
+            return await _repo.GetAllUsresAsync();
+        }
+
+
 
     }
 
