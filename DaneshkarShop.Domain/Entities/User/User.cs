@@ -16,6 +16,7 @@ public class User
     public string Password { get; set; }
     public DateTime CreateDate { get; set; }
     public bool IsDelete { get; set; }
+    public bool SuperAdmin { get; set; }
 
     //Relations
     public ICollection<UserSelectedRole> UserSelectedRoles { get; set; }

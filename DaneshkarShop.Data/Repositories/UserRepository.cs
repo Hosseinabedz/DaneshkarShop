@@ -37,9 +37,13 @@ namespace DaneshkarShop.Data.Repositories
         {
             await _context.SaveChangesAsync();
         }
-        public async Task<User> GetUserByMobile(string mobile)
+        public async Task<User?> GetUserByMobile(string mobile)
         {
             return await _context.Users.SingleOrDefaultAsync(u => u.Mobile == mobile && u.IsDelete == false);
+        }
+        public async Task<User?> GetUserById(int id)
+        {
+            return await _context.Users.FindAsync(id);
         }
     }
 

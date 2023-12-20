@@ -13,5 +13,6 @@ namespace DaneshkarShop.Domain.IRepositories
         Task<bool> IsExistsUserByMobile(string mobile);
         Task SaveChanges();
         Task<User> GetUserByMobile(string mobile);
+        Task<User?> GetUserById(int id);
     }
 }
