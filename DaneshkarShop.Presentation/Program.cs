@@ -25,12 +25,7 @@ namespace DaneshkarShop.Presentation
             builder.Services.AddScoped<IUserRepository, UserRepository>();
             builder.Services.AddScoped<IRoleRepository, RoleRepository>();
             builder.Services.AddScoped<IRoleService, RoleService>();
-
-
             #endregion
-
-
-
             #region Authentication
             builder.Services.AddAuthentication(options =>
             {

@@ -9,6 +9,8 @@ using System.Text;
 using System.Threading.Tasks;
 using UserRegisterDTO = DaneshkarShop.Application.DTOs.SiteSide.Account.UserRegisterDTO;
 using DaneshkarShop.Application.Utilities;
+using DaneshkarShop.Application.DTOs.AdminSide.User;
+using DaneshkarShop.Domain.Entities.Role;
 
 namespace DaneshkarShop.Application.Services.Implementation
 {
@@ -23,11 +25,10 @@ namespace DaneshkarShop.Application.Services.Implementation
         public IUserRepository _repo { get; }
         #endregion
 
-        public async void AddUserToTheDataBase(User user)
+        public async Task AddUserToTheDataBase(User user)
         {
-            _repo.AddUser(user);
+            await _repo.AddUser(user);
         }
-
         public User FillUserEntity(UserRegisterDTO userDTO)
         {
             User user = new User()
@@ -35,11 +36,10 @@ namespace DaneshkarShop.Application.Services.Implementation
                 UserName = userDTO.Username,
                 Password = PasswordHelper.EncodePasswordMd5(userDTO.Password),
                 Mobile = userDTO.Mobile.Trim(),
-                CreateDate = DateTime.Now,
+                CreateDate = DateTime.Now
             };
             return user;
         }
-
         public async Task<bool> IsExistsUserByMobile(string mobile)
         {
             return await _repo.IsExistsUserByMobile(mobile.Trim());
@@ -52,7 +52,7 @@ namespace DaneshkarShop.Application.Services.Implementation
                 return false;
             }
             var user = FillUserEntity(userDTO);
-            AddUserToTheDataBase(user);
+            await AddUserToTheDataBase(user);
             return true;
         }
         public async Task<User> GetUserByMobile(string mobile)
@@ -68,13 +68,69 @@ namespace DaneshkarShop.Application.Services.Implementation
             }
             return true;
         }
-        public async Task<List<User>> GetAllUsresAsync()
+        public async Task<List<ListOfUsersDTO>> GetAllUsresAsync()
         {
-            return await _repo.GetAllUsresAsync();
+            var users = await _repo.GetAllUsresAsync();
+            List<ListOfUsersDTO> returnModel = new();
+            foreach (var user in users)
+            {
+                ListOfUsersDTO usersDTO = new()
+                {
+                    UserId = user.UserId,
+                    CreateDate = user.CreateDate,
+                    Mobile = user.Mobile,
+                    UserName = user.UserName,
+                    Avatar = user.Avatar,
+                };
+                returnModel.Add(usersDTO);
+            }
+            return returnModel;
         }
+        public async Task<User?> GetUserById(int id)
+        {
+            return await _repo.GetUserById(id);
+        }
+        public async Task<EditUserAdminSideDTO?> FillEditUserAdminSideDTO(int id)
+        {
+            // Get user by Id
+            var user = await _repo.GetUserById(id);
+            // map to the DTO
+            if (user == null) return null;
+            EditUserAdminSideDTO returnModel = new()
+            {
+                UserId = user.UserId,
+                Mobile = user.Mobile,
+                UserName = user.UserName,
+                OriginalAvatar = user.Avatar,
+            };
+            return returnModel;
+        }
+        public async Task<bool> EditUserAdminSide(EditUserAdminSideDTO model)
+        {
 
+            // Get user by Id
+            var userOrigin = await _repo.GetUserById(model.UserId);
+            if (userOrigin == null) return false;
+            // Update user
+            userOrigin.UserName = model.UserName;
+            userOrigin.Mobile = model.Mobile;
+            if (model.Avatar != null)
+            {
+                //Save New Image
+                userOrigin.Avatar = NameGenerator.GenerateUniqCode() + Path.GetExtension(model.Avatar.Name);
 
+                string imagePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/Images/UserAvatar", userOrigin.Avatar);
+                using (var stream = new FileStream(imagePath, FileMode.Create))
+                {
+                    model.Avatar.CopyTo(stream);
+                }
+            }
 
+            _repo.UpdateUser(userOrigin);
+            await _repo.SaveChanges();
+            return true;
+        }
     }
+    
 
 }

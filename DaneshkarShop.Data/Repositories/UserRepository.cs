@@ -1,4 +1,5 @@
-﻿using DaneshkarShop.Application.DTOs.SiteSide.Account;
+﻿using DaneshkarShop.Application.DTOs.AdminSide.User;
+using DaneshkarShop.Application.DTOs.SiteSide.Account;
 using DaneshkarShop.Data.AppDbContext;
 using DaneshkarShop.Domain.Entities.User;
 using DaneshkarShop.Domain.IRepositories;
@@ -27,7 +28,7 @@ namespace DaneshkarShop.Data.Repositories
         public async Task AddUser(User user)
         {
             await _context.Users.AddAsync(user);
-            SaveChanges();
+            await SaveChanges();
         }
         public async Task<bool> IsExistsUserByMobile(string mobile)
         {
@@ -39,18 +40,30 @@ namespace DaneshkarShop.Data.Repositories
         }
         public async Task<User?> GetUserByMobile(string mobile)
         {
-            return await _context.Users.SingleOrDefaultAsync(u => u.Mobile == mobile && u.IsDelete == false);
+            return await _context.Users.FirstOrDefaultAsync(u => u.Mobile == mobile && u.IsDelete == false);
         }
         public async Task<User?> GetUserById(int id)
         {
-            return await _context.Users.FindAsync(id);
+            return await _context.Users.FirstOrDefaultAsync(p => p.UserId == id);
         }
         public async Task<List<User>> GetAllUsresAsync()
         {
-            return await _context.Users
-                                 .Where(u => u.IsDelete == false)
-                                 .OrderByDescending(p => p.CreateDate)
+            var listOfUsers = await _context.Users
+                                            .Where(u => !u.IsDelete)
+                                            .ToListAsync();
+            return listOfUsers;
+
+        }
+        public async Task<List<int>> GetListOfRolesIdByUserId(int userId)
+        {
+            return await _context.UserSelectedRoles
+                                 .Where(e => e.UserId == userId)
+                                 .Select(e => e.RoleId)
                                  .ToListAsync();
+        }
+        public void UpdateUser(User user)
+        {
+            _context.Users.Update(user);
         }
     }
 

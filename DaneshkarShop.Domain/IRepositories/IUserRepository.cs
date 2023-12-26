@@ -15,5 +15,7 @@ namespace DaneshkarShop.Domain.IRepositories
         Task<User> GetUserByMobile(string mobile);
         Task<User?> GetUserById(int id);
         Task<List<User>> GetAllUsresAsync();
+        Task<List<int>> GetListOfRolesIdByUserId(int userId);
+        void UpdateUser(User user);
     }
 }

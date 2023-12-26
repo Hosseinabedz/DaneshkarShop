@@ -1,5 +1,5 @@
 ﻿@using DaneshkarShop.Application.Utilities
-@model List<DaneshkarShop.Domain.Entities.User.User>
+@model List<DaneshkarShop.Application.DTOs.AdminSide.User.ListOfUsersDTO>
 @{
     ViewData["Title"] = "لیست کاربران";
 }
@@ -84,11 +84,11 @@
                                 <table id="example1" class="table table-bordered table-striped dataTable" role="grid">
                                     <thead>
                                         <tr role="row">
-
+                                            
+                                            <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="عکس پروفایل : activate to sort column ascending">عکس پروفایل  </th>
                                             <th class="sorting_asc" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-sort="ascending" aria-label="نام کاربری  : activate to sort column descending">     نام کاربری</th>
-
                                             <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="موبایل : activate to sort column ascending">موبایل </th>
-                                            <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="موبایل : activate to sort column ascending">ثبت نام  </th>
+                                            <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="ثبت نام : activate to sort column ascending">ثبت نام  </th>
 
                                             <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label=" activate to sort column ascending"></th>
                                         </tr>
@@ -98,26 +98,43 @@
                                         @foreach (var item in Model)
                                         {
                                             <tr role="row" class="odd">
-
+                                                <td>
+                                                @if (string.IsNullOrEmpty(item.Avatar))
+                                                {
+                                                    <img style="height:50px; width:50px; bor" id="imgAvatar" class="img-responsive rounded" src="/Images/UserAvatar/Defult.jpg" alt="upload_img">
+                                                }
+                                                else
+                                                {
+                                                    @* <img style="margin:auto; width:342px" id="imgAvatar" class="img-responsive rounded" src="/Images/UserAvatar/@Model.UserOriginalAvatar" alt="upload_img"> *@
+                                                }
+                                                </td>
                                                 <td>@item.UserName</td>
                                                 <td>@item.Mobile</td>
                                                 <td>@item.CreateDate.ToShamsi()</td>
 
                                                 <td>
 
-                                                    <a class="btn btn-warning btn-sm waves-effect" asp-action="Edit" asp-area="Admin" asp-controller="Users" asp-route-id="">
+                                                    <a class="btn btn-warning btn-sm waves-effect"
+                                                        asp-action="Edit" 
+                                                        asp-area="Admin" 
+                                                        asp-controller="User" 
+                                                        asp-route-id="@item.UserId">
                                                         <i class="glyphicon glyphicon-edit"></i>
                                                         ویرایش
                                                     </a>
 
-                                                    <a class="btn btn-info btn-sm waves-effect" asp-action="Details" asp-area="Admin" asp-controller="Users" asp-route-id="">
+                                                    <a class="btn btn-info btn-sm waves-effect" asp-action="Details" asp-area="Admin" asp-controller="User" asp-route-id="">
                                                         <i class="glyphicon glyphicon-edit"></i>
                                                         اطلاعات
                                                     </a>
 
-                                                    <a class="btn btn-danger btn-sm waves-effect" asp-action="Delete" asp-area="Admin" asp-controller="Users" asp-route-id="">
+                                                    <a class="btn btn-danger btn-sm waves-effect" asp-action="Delete" asp-area="Admin" asp-controller="User" asp-route-id="">
                                                         <i class="glyphicon glyphicon-trash"></i>
                                                         حذف
+                                                    </a>
+                                                    <a class="btn btn-warning btn-sm waves-effect" asp-action="Delete" asp-area="Admin" asp-controller="User" asp-route-id="">
+                                                        <i class="glyphicon glyphicon-trash"></i>
+                                                        ورود با حساب کاربر
                                                     </a>
                                                 </td>
                                             </tr>

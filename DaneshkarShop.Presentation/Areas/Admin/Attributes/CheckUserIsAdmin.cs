@@ -16,7 +16,7 @@ namespace DaneshkarShop.Presentation.Areas.Admin.Attributes
            
             var service = (IRoleService)context.HttpContext.RequestServices.GetService(typeof(IRoleService))!;
             int userId = (int)context.HttpContext.User.GetUserId();
-            base.OnActionExecutionAsync(context, next);
+            await base.OnActionExecutionAsync(context, next);
 
             // user is admin?
             if (await service.IsUserAdmin(userId) == false)

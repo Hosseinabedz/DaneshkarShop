@@ -17,6 +17,7 @@ public class User
     public DateTime CreateDate { get; set; }
     public bool IsDelete { get; set; }
     public bool SuperAdmin { get; set; }
+    public string? Avatar { get; set; }
 
     //Relations
     public ICollection<UserSelectedRole> UserSelectedRoles { get; set; }

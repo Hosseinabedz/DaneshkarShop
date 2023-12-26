@@ -41,7 +41,7 @@ public class AccountController : Controller
     #endregion
 
     #region Login
-    public async Task<IActionResult> Login()
+    public  IActionResult Login()
     {
         return View();
     }
@@ -68,8 +68,6 @@ public class AccountController : Controller
 
                 await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal, authProps);
                 #endregion
-
-
                 return RedirectToAction("Index", "Home");
             }
         }

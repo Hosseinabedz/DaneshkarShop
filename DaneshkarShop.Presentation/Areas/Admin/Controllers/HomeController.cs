@@ -16,11 +16,11 @@ namespace DaneshkarShop.Presentation.Areas.Admin.Controllers
 
         public IRoleService _roleService { get; }
         #endregion
-        public async Task<IActionResult> Index()
+        public  IActionResult Index()
         {
             return View();
         }
-        public async Task<IActionResult> GetAllUsers()
+        public IActionResult GetAllUsers()
         {
             return View();
         }
