@@ -29,5 +29,17 @@ namespace DaneshkarShop.Data.Repositories
                             .ToListAsync();
             return roles;
         }
+        public async Task<List<Role>> GetListOfRoles()
+        {
+            return await _context.Roles.ToListAsync();
+        }
+        public async Task AddUserSelectedRole(UserSelectedRole userSelectedRole)
+        {
+            await _context.UserSelectedRoles.AddAsync(userSelectedRole);
+        }
+        public async Task SaveChanges()
+        {
+            await _context.SaveChangesAsync();
+        }
     }
 }

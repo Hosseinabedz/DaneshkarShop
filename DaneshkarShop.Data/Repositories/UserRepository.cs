@@ -1,6 +1,7 @@
 ﻿using DaneshkarShop.Application.DTOs.AdminSide.User;
 using DaneshkarShop.Application.DTOs.SiteSide.Account;
 using DaneshkarShop.Data.AppDbContext;
+using DaneshkarShop.Domain.Entities.Role;
 using DaneshkarShop.Domain.Entities.User;
 using DaneshkarShop.Domain.IRepositories;
 using Microsoft.EntityFrameworkCore;
@@ -64,6 +65,14 @@ namespace DaneshkarShop.Data.Repositories
         public void UpdateUser(User user)
         {
             _context.Users.Update(user);
+        }
+        public async Task<List<UserSelectedRole>> GetListOfUserSelectedRolesByUserId(int userId)
+        {
+            return await _context.UserSelectedRoles.Where(e => e.UserId == userId).ToListAsync();
+        }
+        public void DeleteRangeOfUserSelectedRoles(List<UserSelectedRole> userSelectedRoles)
+        {
+            _context.UserSelectedRoles.RemoveRange(userSelectedRoles);
         }
     }
 

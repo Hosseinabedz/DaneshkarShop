@@ -101,11 +101,11 @@
                                                 <td>
                                                 @if (string.IsNullOrEmpty(item.Avatar))
                                                 {
-                                                    <img style="height:50px; width:50px; bor" id="imgAvatar" class="img-responsive rounded" src="/Images/UserAvatar/Defult.jpg" alt="upload_img">
+                                                    <img style="height:50px; width:50px; border-radius:100%" id="imgAvatar" class="img-responsive rounded" src="/Images/UserAvatar/Defult.jpg" alt="upload_img">
                                                 }
                                                 else
                                                 {
-                                                    @* <img style="margin:auto; width:342px" id="imgAvatar" class="img-responsive rounded" src="/Images/UserAvatar/@Model.UserOriginalAvatar" alt="upload_img"> *@
+                                                        <img style="height:50px; width:50px; border-radius:100%" id="imgAvatar" class="img-responsive rounded" src="/Images/UserAvatar/@item.Avatar" alt="upload_img">
                                                 }
                                                 </td>
                                                 <td>@item.UserName</td>

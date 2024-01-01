@@ -7,12 +7,14 @@ namespace DaneshkarShop.Presentation.Areas.Admin.Controllers
     public class UserController : AdminBaseController
     {
         #region Ctor
-        public UserController(IUserService userService)
+        public UserController(IUserService userService, IRoleService roleService)
         {
             _userService = userService;
+            _roleService = roleService;
         }
 
         public IUserService _userService { get; }
+        public IRoleService _roleService { get; }
         #endregion
 
         #region List Of Users
@@ -28,14 +30,23 @@ namespace DaneshkarShop.Presentation.Areas.Admin.Controllers
         public async Task<IActionResult> Edit(int id)
         {
             var userEditDTO = await _userService.FillEditUserAdminSideDTO(id);
+            if (userEditDTO == null) return NotFound();
+
+            #region View Data
+            ViewData["Roles"] = await _roleService.GetListOfRoles();
+            #endregion
+
+
+
+
             return View(userEditDTO);
         }
         [HttpPost, ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(EditUserAdminSideDTO userEditDTO)
+        public async Task<IActionResult> Edit(EditUserAdminSideDTO userEditDTO, List<int> SelectedRoles)
         {
             if (ModelState.IsValid)
             {
-                var result = await _userService.EditUserAdminSide(userEditDTO);
+                var result = await _userService.EditUserAdminSide(userEditDTO, SelectedRoles);
                 if(result)
                 {
                     return RedirectToAction(nameof(Index));

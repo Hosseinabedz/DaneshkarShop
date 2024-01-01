@@ -11,5 +11,7 @@ namespace DaneshkarShop.Application.Services.Interface
     {
         Task<List<Role>> GetUserRolesByUserId(int userId);
         Task<bool> IsUserAdmin(int userId);
+        Task<List<Role>> GetListOfRoles();
+        Task AddUserSelectedRole(UserSelectedRole userSelectedRole);
     }
 }

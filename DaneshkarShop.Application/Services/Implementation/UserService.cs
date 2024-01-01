@@ -17,17 +17,18 @@ namespace DaneshkarShop.Application.Services.Implementation
     public class UserService : IUserService
     {
         #region Ctor
-        public UserService(IUserRepository repository)
+        public UserService(IUserRepository userRepository, IRoleRepository roleRepository)
         {
-            _repo = repository;
+            _userRepository = userRepository;
+            _roleRepository = roleRepository;
         }
 
-        public IUserRepository _repo { get; }
+        public IUserRepository _userRepository { get; }
+        public IRoleRepository _roleRepository { get; }
         #endregion
-
         public async Task AddUserToTheDataBase(User user)
         {
-            await _repo.AddUser(user);
+            await _userRepository.AddUser(user);
         }
         public User FillUserEntity(UserRegisterDTO userDTO)
         {
@@ -42,7 +43,7 @@ namespace DaneshkarShop.Application.Services.Implementation
         }
         public async Task<bool> IsExistsUserByMobile(string mobile)
         {
-            return await _repo.IsExistsUserByMobile(mobile.Trim());
+            return await _userRepository.IsExistsUserByMobile(mobile.Trim());
         }
         public async Task<bool> RegisterUser(UserRegisterDTO userDTO)
         {
@@ -57,7 +58,7 @@ namespace DaneshkarShop.Application.Services.Implementation
         }
         public async Task<User> GetUserByMobile(string mobile)
         {
-            return await _repo.GetUserByMobile(mobile.Trim());
+            return await _userRepository.GetUserByMobile(mobile.Trim());
         }
         public async Task<bool> LoginUser(UserLoginDTO userDTO) 
         {
@@ -70,7 +71,7 @@ namespace DaneshkarShop.Application.Services.Implementation
         }
         public async Task<List<ListOfUsersDTO>> GetAllUsresAsync()
         {
-            var users = await _repo.GetAllUsresAsync();
+            var users = await _userRepository.GetAllUsresAsync();
             List<ListOfUsersDTO> returnModel = new();
             foreach (var user in users)
             {
@@ -88,12 +89,12 @@ namespace DaneshkarShop.Application.Services.Implementation
         }
         public async Task<User?> GetUserById(int id)
         {
-            return await _repo.GetUserById(id);
+            return await _userRepository.GetUserById(id);
         }
         public async Task<EditUserAdminSideDTO?> FillEditUserAdminSideDTO(int id)
         {
             // Get user by Id
-            var user = await _repo.GetUserById(id);
+            var user = await _userRepository.GetUserById(id);
             // map to the DTO
             if (user == null) return null;
             EditUserAdminSideDTO returnModel = new()
@@ -103,13 +104,15 @@ namespace DaneshkarShop.Application.Services.Implementation
                 UserName = user.UserName,
                 OriginalAvatar = user.Avatar,
             };
+            // get user roles
+            returnModel.CurrentUserRolesId = await _userRepository.GetListOfRolesIdByUserId(user.UserId);
             return returnModel;
         }
-        public async Task<bool> EditUserAdminSide(EditUserAdminSideDTO model)
+        public async Task<bool> EditUserAdminSide(EditUserAdminSideDTO model, List<int>? SelectedRoles)
         {
 
             // Get user by Id
-            var userOrigin = await _repo.GetUserById(model.UserId);
+            var userOrigin = await _userRepository.GetUserById(model.UserId);
             if (userOrigin == null) return false;
             // Update user
             userOrigin.UserName = model.UserName;
@@ -117,7 +120,7 @@ namespace DaneshkarShop.Application.Services.Implementation
             if (model.Avatar != null)
             {
                 //Save New Image
-                userOrigin.Avatar = NameGenerator.GenerateUniqCode() + Path.GetExtension(model.Avatar.Name);
+                userOrigin.Avatar = NameGenerator.GenerateUniqCode() + Path.GetExtension(model.Avatar.FileName);
 
                 string imagePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/Images/UserAvatar", userOrigin.Avatar);
                 using (var stream = new FileStream(imagePath, FileMode.Create))
@@ -125,12 +128,30 @@ namespace DaneshkarShop.Application.Services.Implementation
                     model.Avatar.CopyTo(stream);
                 }
             }
+            // Update roles
+            List<UserSelectedRole> userSelectedRoles = await _userRepository.GetListOfUserSelectedRolesByUserId(model.UserId);
+            if (userSelectedRoles != null && userSelectedRoles.Any())
+            {
+                _userRepository.DeleteRangeOfUserSelectedRoles(userSelectedRoles);
+            }
+            if (SelectedRoles != null && SelectedRoles.Any())
+            {
+                foreach (var roleId in SelectedRoles)
+                {
 
-            _repo.UpdateUser(userOrigin);
-            await _repo.SaveChanges();
+                    UserSelectedRole userSelectedRole = new()
+                    {
+                        RoleId = roleId,
+                        UserId = model.UserId,
+                    };
+
+                    await _roleRepository.AddUserSelectedRole(userSelectedRole);
+                }
+            }
+
+            _userRepository.UpdateUser(userOrigin);
+            await _userRepository.SaveChanges();
             return true;
         }
     }
-    
-
 }

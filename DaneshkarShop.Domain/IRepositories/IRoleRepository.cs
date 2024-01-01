@@ -10,5 +10,8 @@ namespace DaneshkarShop.Domain.IRepositories
     public interface IRoleRepository
     {
         Task<List<Role>> GetUserRolesByUserId(int userId);
+        Task<List<Role>> GetListOfRoles();
+        Task AddUserSelectedRole(UserSelectedRole userSelectedRole);
+        Task SaveChanges();
     }
 }

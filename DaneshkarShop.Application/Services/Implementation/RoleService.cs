@@ -40,5 +40,13 @@ namespace DaneshkarShop.Application.Services.Implementation
             }
             return false;
         }
+        public async Task<List<Role>> GetListOfRoles()
+        {
+            return await _roleRepository.GetListOfRoles();
+        }
+        public async Task AddUserSelectedRole(UserSelectedRole userSelectedRole)
+        {
+            await _roleRepository.AddUserSelectedRole(userSelectedRole);
+        }
     }
 }

@@ -20,7 +20,7 @@ namespace DaneshkarShop.Application.Services.Interface
         Task<List<ListOfUsersDTO>> GetAllUsresAsync();
         Task<User?> GetUserById(int id);
         Task<EditUserAdminSideDTO?> FillEditUserAdminSideDTO(int id);
-        Task<bool> EditUserAdminSide(EditUserAdminSideDTO model);
+        Task<bool> EditUserAdminSide(EditUserAdminSideDTO model, List<int> SelectedRoles);
 
     }
 }

@@ -1,4 +1,5 @@
-﻿using DaneshkarShop.Domain.Entities.User;
+﻿using DaneshkarShop.Domain.Entities.Role;
+using DaneshkarShop.Domain.Entities.User;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,5 +18,7 @@ namespace DaneshkarShop.Domain.IRepositories
         Task<List<User>> GetAllUsresAsync();
         Task<List<int>> GetListOfRolesIdByUserId(int userId);
         void UpdateUser(User user);
+        Task<List<UserSelectedRole>> GetListOfUserSelectedRolesByUserId(int userId);
+        void DeleteRangeOfUserSelectedRoles(List<UserSelectedRole> userSelectedRoles);
     }
 }
