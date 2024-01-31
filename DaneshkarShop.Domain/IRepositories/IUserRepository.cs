@@ -20,5 +20,6 @@ namespace DaneshkarShop.Domain.IRepositories
         void UpdateUser(User user);
         Task<List<UserSelectedRole>> GetListOfUserSelectedRolesByUserId(int userId);
         void DeleteRangeOfUserSelectedRoles(List<UserSelectedRole> userSelectedRoles);
+        Task<int> GetCountOfActiveUsers();
     }
 }

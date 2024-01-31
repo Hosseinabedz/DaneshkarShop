@@ -1,4 +1,5 @@
-﻿using DaneshkarShop.Application.DTOs.AdminSide.User;
+﻿using DaneshkarShop.Application.DTOs.AdminSide.LandingPage;
+using DaneshkarShop.Application.DTOs.AdminSide.User;
 using DaneshkarShop.Application.DTOs.SiteSide.Account;
 using DaneshkarShop.Domain.Entities.User;
 using System;
@@ -21,6 +22,8 @@ namespace DaneshkarShop.Application.Services.Interface
         Task<User?> GetUserById(int id);
         Task<EditUserAdminSideDTO?> FillEditUserAdminSideDTO(int id);
         Task<bool> EditUserAdminSide(EditUserAdminSideDTO model, List<int> SelectedRoles);
+        Task<bool> DeleteUser(int userId, CancellationToken cancellation);
+        Task<LandingPageModelDTO> FillLandingPageModelDTO();
 
     }
 }

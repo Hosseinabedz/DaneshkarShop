@@ -74,6 +74,10 @@ namespace DaneshkarShop.Data.Repositories
         {
             _context.UserSelectedRoles.RemoveRange(userSelectedRoles);
         }
+        public async Task<int> GetCountOfActiveUsers()
+        {
+            return await _context.Users.Where(u => u.IsDelete == false).CountAsync();
+        }
     }
 
 }

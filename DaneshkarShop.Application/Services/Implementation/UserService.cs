@@ -11,9 +11,13 @@ using UserRegisterDTO = DaneshkarShop.Application.DTOs.SiteSide.Account.UserRegi
 using DaneshkarShop.Application.Utilities;
 using DaneshkarShop.Application.DTOs.AdminSide.User;
 using DaneshkarShop.Domain.Entities.Role;
+using DaneshkarShop.Application.DTOs.AdminSide.LandingPage;
 
 namespace DaneshkarShop.Application.Services.Implementation
 {
+    #region Ctor
+
+    #endregion
     public class UserService : IUserService
     {
         #region Ctor
@@ -152,6 +156,24 @@ namespace DaneshkarShop.Application.Services.Implementation
             _userRepository.UpdateUser(userOrigin);
             await _userRepository.SaveChanges();
             return true;
+        }
+        public async Task<bool> DeleteUser(int id, CancellationToken cancellation)
+        {
+            var deleteUser = await _userRepository.GetUserById(id);
+            if (deleteUser == null) return false;
+            deleteUser.IsDelete = true;
+
+            _userRepository.UpdateUser(deleteUser);
+            await _userRepository.SaveChanges();
+            return true;
+        }
+        public async Task<LandingPageModelDTO> FillLandingPageModelDTO()
+        {
+            var result = new LandingPageModelDTO()
+            {
+                CountOfActiveUsers = await _userRepository.GetCountOfActiveUsers()
+            };
+            return result;
         }
     }
 }

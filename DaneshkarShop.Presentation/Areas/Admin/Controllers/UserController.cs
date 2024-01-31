@@ -1,5 +1,6 @@
 ﻿using DaneshkarShop.Application.DTOs.AdminSide.User;
 using DaneshkarShop.Application.Services.Interface;
+using DaneshkarShop.Presentation.HttpManager;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DaneshkarShop.Presentation.Areas.Admin.Controllers
@@ -57,5 +58,30 @@ namespace DaneshkarShop.Presentation.Areas.Admin.Controllers
 
         #endregion
 
-    }
+        #region Detail
+        public async Task<IActionResult> Detail(int id)
+        {
+            var userDetailDTO = await _userService.FillEditUserAdminSideDTO(id);
+            if (userDetailDTO == null) return NotFound();
+
+            #region View Data
+            ViewData["Roles"] = await _roleService.GetListOfRoles();
+            #endregion
+            return View(userDetailDTO);
+        }
+        #endregion
+
+        #region Delete
+        public async Task<IActionResult> Delete(int id, CancellationToken cancellation)
+        {
+            var res = await _userService.DeleteUser(id, cancellation);
+            if (res)
+            {
+                return ApiResponse.SetResponse(ApiResponseStatus.Success, null, "عملیات باموفقیت انجام شده است.");
+            }
+            return ApiResponse.SetResponse(ApiResponseStatus.Danger, null, "عملیات باشکست مواجه شده است.");
+        }
+        #endregion
+            
+    } 
 }
